@@ -3,6 +3,7 @@ package se.urlshortener;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import se.urlshortener.health.GetHealthCheck;
 import se.urlshortener.representation.ShortUrl;
 import se.urlshortener.resources.UrlShortenerResource;
 
@@ -33,7 +34,12 @@ public class UrlShortenerApplication extends Application<UrlShortenerConfigurati
         final ShortUrl otherShortUrl = new ShortUrl("http://www.google.com","sTE3IQ==");
         cache.put(shortUrl.getShortURL(),shortUrl.getOriginalURL());
         cache.put(otherShortUrl.getShortURL(),otherShortUrl.getOriginalURL());
+
         final UrlShortenerResource resource = new UrlShortenerResource(cache);
+        final GetHealthCheck healthCheck = new GetHealthCheck("http://dice.se/");
+
+        //TODO HealthCheck correctly
+        environment.healthChecks().register("GetURLToDICEWorks",healthCheck);
         environment.jersey().register(resource);
     }
 }
