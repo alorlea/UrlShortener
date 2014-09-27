@@ -5,10 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>se.urlShortener</groupId>
-    <artifactId>se.urlShortener-parent</artifactId>
+    <artifactId>urlshortener-application</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
+        <module>../UrlShortenerFrontend</module>
         <module>../UrlShortenerService</module>
     </modules>
 
