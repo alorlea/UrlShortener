@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class UrlShortenerUtil {
 
-    public static Url encodeURL(String URL,String hostname) {
+    public static String encodeURL(String URL) {
         String encodedURL ="";
         try {
             byte[] bytesOfMessage = URL.getBytes("UTF-8");
@@ -27,7 +27,7 @@ public class UrlShortenerUtil {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return new Url(hostname+encodedURL);
+        return encodedURL;
     }
 
     private static byte[] getLowerBytes(byte[] digest){

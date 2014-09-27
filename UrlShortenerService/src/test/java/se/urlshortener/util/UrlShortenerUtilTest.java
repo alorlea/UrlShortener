@@ -13,14 +13,14 @@ public class UrlShortenerUtilTest {
 
     @Test
     public void encodingURLGivesShortURL(){
-        Url shortUrl = UrlShortenerUtil.encodeURL("http://dice.se/","http://localhost:8080/UrlShortener/");
-        assertEquals("http://localhost:8080/UrlShortener/0Cx8xg==",shortUrl.getUrl());
+        String shortUrl = UrlShortenerUtil.encodeURL("http://dice.se/");
+        assertEquals("0Cx8xg==",shortUrl);
     }
 
     @Test
     public void twoDifferentURLsGiveDifferentResult(){
-        Url shortUrl = UrlShortenerUtil.encodeURL("http://dice.se/","http://localhost:8080/UrlShortener/");
-        Url otherShortUrl = UrlShortenerUtil.encodeURL("http://www.google.com","http://localhost:8080/UrlShortener/");
-        assertNotEquals(shortUrl.getUrl(),otherShortUrl.getUrl());
+        String shortUrl = UrlShortenerUtil.encodeURL("http://dice.se/");
+        String otherShortUrl = UrlShortenerUtil.encodeURL("http://www.google.com");
+        assertNotEquals(shortUrl,otherShortUrl);
     }
 }

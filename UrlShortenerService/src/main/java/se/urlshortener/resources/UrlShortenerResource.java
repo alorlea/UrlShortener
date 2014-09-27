@@ -72,9 +72,9 @@ public class UrlShortenerResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Url createNewShortURL(Url url) {
         String originalUrl = url.getUrl();
-        Url shortUrl = UrlShortenerUtil.encodeURL(originalUrl, "http://localhost:8080/UrlShortener/");
-        storeNewEntry(shortUrl.getUrl(),originalUrl);
-        return shortUrl;
+        String shortUrl = UrlShortenerUtil.encodeURL(originalUrl);
+        storeNewEntry(shortUrl,originalUrl);
+        return new Url("http://localhost:8080/UrlShortener/"+shortUrl);
     }
 
     private void storeNewEntry(String shortUrl,String url) {
