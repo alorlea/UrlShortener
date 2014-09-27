@@ -10,11 +10,23 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 public class UrlShortenerConfiguration extends Configuration {
     @NotEmpty
+    private String baseURL;
+    @NotEmpty
     private String enableAmazonDB;
     private String awsAccessKeyId;
     private String secretAccessKey;
     private String awsRegion;
     private String awsTableName;
+
+    @JsonProperty
+    public String getBaseURL() {
+        return baseURL;
+    }
+
+    @JsonProperty
+    public void setBaseURL(String baseURL) {
+        this.baseURL = baseURL;
+    }
 
     @JsonProperty
     public String getEnableAmazonDB() {

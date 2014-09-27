@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Alberto on 25/09/2014.
@@ -23,18 +24,21 @@ import java.util.Map;
 public class UrlShortenerResource {
     private Map<String, String> cachedKeys;
     private boolean amazonDBEnabled;
+    private String baseURL;
 
     public UrlShortenerResource(Map<String, String> storedValuesTest) {
         this.cachedKeys = storedValuesTest;
         this.amazonDBEnabled = false;
+        this.baseURL = "http://localhost:8080/UrlShortener";
     }
 
-    public UrlShortenerResource(Map<String, String> cache, UrlShortenerConfiguration urlShortenerConfiguration) {
-        this.cachedKeys = cache;
+    public UrlShortenerResource(UrlShortenerConfiguration urlShortenerConfiguration) {
+        this.baseURL = urlShortenerConfiguration.getBaseURL();
         if (urlShortenerConfiguration.getEnableAmazonDB().equals("true")) {
             this.amazonDBEnabled = true;
             AmazonDBDAOStore.init(urlShortenerConfiguration);
         } else {
+            this.cachedKeys = new ConcurrentHashMap<String, String>();
             this.amazonDBEnabled = false;
         }
     }
@@ -44,22 +48,22 @@ public class UrlShortenerResource {
     @Timed
     public Response fetchOriginalURL(@PathParam("shortUrl") String shortUrl) {
         try {
-            if (cachedKeys.containsKey(shortUrl)) {
-                URI location = new URI(cachedKeys.get(shortUrl));
-                return Response.temporaryRedirect(location).build();
-            } else if (amazonDBEnabled) {
+            if (amazonDBEnabled) {
                 Map<String, AttributeValue> result = AmazonDBDAOStore.getOriginalURL(shortUrl);
                 if (result != null) {
                     String originalUrl = result.get("originalurl").getS();
-                    cachedKeys.put(shortUrl, originalUrl);
-
                     URI location = new URI(originalUrl);
                     return Response.temporaryRedirect(location).build();
                 } else {
                     return Response.status(404).build();
                 }
             } else {
-                return Response.status(404).build();
+                if (cachedKeys.containsKey(shortUrl)) {
+                    URI location = new URI(cachedKeys.get(shortUrl));
+                    return Response.temporaryRedirect(location).build();
+                } else {
+                    return Response.status(404).build();
+                }
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -73,21 +77,21 @@ public class UrlShortenerResource {
     public Url createNewShortURL(Url url) {
         String originalUrl = url.getUrl();
         String shortUrl = UrlShortenerUtil.encodeURL(originalUrl);
-        storeNewEntry(shortUrl,originalUrl);
-        return new Url("http://localhost:8080/UrlShortener/"+shortUrl);
+        storeNewEntry(shortUrl, originalUrl);
+        return new Url(baseURL+"/"+shortUrl);
     }
 
-    private void storeNewEntry(String shortUrl,String url) {
-        //check my local copy
-        if(!cachedKeys.containsKey(shortUrl)){
-            //first check if in DynamoDB
-            if(amazonDBEnabled) {
-                Map<String, AttributeValue> result = AmazonDBDAOStore.getOriginalURL(shortUrl);
-                if (result == null) {
-                    AmazonDBDAOStore.putNewEncodedURL(shortUrl, url);
-                }
+    private void storeNewEntry(String shortUrl, String url) {
+        //check my if exists
+        if (amazonDBEnabled) {
+            Map<String, AttributeValue> result = AmazonDBDAOStore.getOriginalURL(shortUrl);
+            if (result == null) {
+                AmazonDBDAOStore.putNewEncodedURL(shortUrl, url);
             }
-            cachedKeys.put(shortUrl,url);
+        } else {
+            if (!cachedKeys.containsKey(shortUrl)) {
+                cachedKeys.put(shortUrl, url);
+            }
         }
 
     }

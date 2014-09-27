@@ -30,10 +30,9 @@ public class UrlShortenerApplication extends Application<UrlShortenerConfigurati
 
     @Override
     public void run(UrlShortenerConfiguration urlShortenerConfiguration, Environment environment) throws Exception {
-        ConcurrentHashMap<String,String> cache = new ConcurrentHashMap<String,String>(100);
 
-        final UrlShortenerResource resource = new UrlShortenerResource(cache,urlShortenerConfiguration);
-        final GetHealthCheck healthCheck = new GetHealthCheck("http://dice.se/");
+        final UrlShortenerResource resource = new UrlShortenerResource(urlShortenerConfiguration);
+        final GetHealthCheck healthCheck = new GetHealthCheck("test");
 
         //TODO HealthCheck correctly
         environment.healthChecks().register("GetURLToDICEWorks",healthCheck);
