@@ -1,6 +1,7 @@
 package se.urlshortener.resources;
 
 import com.codahale.metrics.annotation.Timed;
+import se.urlshortener.UrlShortenerConfiguration;
 import se.urlshortener.representation.ShortUrl;
 import se.urlshortener.representation.Url;
 import se.urlshortener.util.UrlShortenerUtil;
@@ -11,6 +12,7 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Alberto on 25/09/2014.
@@ -20,9 +22,16 @@ import java.util.Map;
 @Produces(MediaType.APPLICATION_JSON)
 public class UrlShortenerResource {
     private Map<String,String> cachedKeys;
+    private boolean amazonDBEnabled;
 
     public UrlShortenerResource(Map<String,String> storedValuesTest) {
         this.cachedKeys = storedValuesTest;
+        this.amazonDBEnabled = false;
+    }
+
+    public UrlShortenerResource(Map<String, String> cache, UrlShortenerConfiguration urlShortenerConfiguration) {
+        this.cachedKeys = cache;
+        this.amazonDBEnabled = urlShortenerConfiguration.getEnableAmazonDB().equals("true");
     }
 
     @GET

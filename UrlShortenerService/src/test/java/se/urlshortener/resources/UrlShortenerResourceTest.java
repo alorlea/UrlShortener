@@ -48,9 +48,9 @@ public class UrlShortenerResourceTest{
     }
     @Test
     public void testPutOriginalURL(){
-        Url url = new Url("http://dice.se/");
+        Url url = new Url("http://www.elotrolado.net/");
         Url newUrl = resources.client().resource("/UrlShortener").type(MediaType.APPLICATION_JSON_TYPE).put(Url.class,
                 url);
-        assertEquals(newUrl.getUrl(),"http://localhost:8080/UrlShortener/0Cx8xg==");
+        assertEquals(newUrl.getUrl(),"http://localhost:8080/UrlShortener/zBByyw==");
     }
 }
