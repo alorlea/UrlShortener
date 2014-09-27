@@ -32,13 +32,6 @@ public class UrlShortenerApplication extends Application<UrlShortenerConfigurati
     public void run(UrlShortenerConfiguration urlShortenerConfiguration, Environment environment) throws Exception {
         ConcurrentHashMap<String,String> cache = new ConcurrentHashMap<String,String>(100);
 
-        //Dummy data
-        final ShortUrl shortUrl = new ShortUrl("http://dice.se/","0Cx8xg==");
-        final ShortUrl otherShortUrl = new ShortUrl("http://www.google.com","sTE3IQ==");
-
-        cache.put(shortUrl.getShortURL(),shortUrl.getOriginalURL());
-        cache.put(otherShortUrl.getShortURL(),otherShortUrl.getOriginalURL());
-
         final UrlShortenerResource resource = new UrlShortenerResource(cache,urlShortenerConfiguration);
         final GetHealthCheck healthCheck = new GetHealthCheck("http://dice.se/");
 

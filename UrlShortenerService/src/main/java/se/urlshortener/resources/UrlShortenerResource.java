@@ -73,6 +73,22 @@ public class UrlShortenerResource {
     public Url createNewShortURL(Url url) {
         String originalUrl = url.getUrl();
         Url shortUrl = UrlShortenerUtil.encodeURL(originalUrl, "http://localhost:8080/UrlShortener/");
+        storeNewEntry(shortUrl.getUrl(),originalUrl);
         return shortUrl;
+    }
+
+    private void storeNewEntry(String shortUrl,String url) {
+        //check my local copy
+        if(!cachedKeys.containsKey(shortUrl)){
+            //first check if in DynamoDB
+            if(amazonDBEnabled) {
+                Map<String, AttributeValue> result = AmazonDBDAOStore.getOriginalURL(shortUrl);
+                if (result == null) {
+                    AmazonDBDAOStore.putNewEncodedURL(shortUrl, url);
+                }
+            }
+            cachedKeys.put(shortUrl,url);
+        }
+
     }
 }
