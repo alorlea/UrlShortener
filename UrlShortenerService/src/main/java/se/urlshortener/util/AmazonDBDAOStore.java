@@ -36,7 +36,7 @@ public class AmazonDBDAOStore {
         System.out.println("Result: " + putItemResult);
     }
 
-    public static AttributeValue getOriginalURL(String shorturl){
+    public static Map<String, AttributeValue> getOriginalURL(String shorturl){
         Map<String, AttributeValue> key = new HashMap<String, AttributeValue>();
         key.put("shorturl", new AttributeValue(shorturl));
 
@@ -50,7 +50,7 @@ public class AmazonDBDAOStore {
         // Check the response.
         System.out.println("Printing item after retrieving it....");
         printItem(result.getItem());
-        return result.getItem().get("originalurl");
+        return result.getItem();
     }
 
     private static Map<String, AttributeValue> newItem(String shorturl, String originalurl) {
@@ -62,16 +62,18 @@ public class AmazonDBDAOStore {
     }
 
     private static void printItem(Map<String, AttributeValue> attributeList) {
-        for (Map.Entry<String, AttributeValue> item : attributeList.entrySet()) {
-            String attributeName = item.getKey();
-            AttributeValue value = item.getValue();
-            System.out.println(attributeName + " "
-                    + (value.getS() == null ? "" : "S=[" + value.getS() + "]")
-                    + (value.getN() == null ? "" : "N=[" + value.getN() + "]")
-                    + (value.getB() == null ? "" : "B=[" + value.getB() + "]")
-                    + (value.getSS() == null ? "" : "SS=[" + value.getSS() + "]")
-                    + (value.getNS() == null ? "" : "NS=[" + value.getNS() + "]")
-                    + (value.getBS() == null ? "" : "BS=[" + value.getBS() + "] \n"));
+        if(attributeList!=null) {
+            for (Map.Entry<String, AttributeValue> item : attributeList.entrySet()) {
+                String attributeName = item.getKey();
+                AttributeValue value = item.getValue();
+                System.out.println(attributeName + " "
+                        + (value.getS() == null ? "" : "S=[" + value.getS() + "]")
+                        + (value.getN() == null ? "" : "N=[" + value.getN() + "]")
+                        + (value.getB() == null ? "" : "B=[" + value.getB() + "]")
+                        + (value.getSS() == null ? "" : "SS=[" + value.getSS() + "]")
+                        + (value.getNS() == null ? "" : "NS=[" + value.getNS() + "]")
+                        + (value.getBS() == null ? "" : "BS=[" + value.getBS() + "] \n"));
+            }
         }
     }
 }

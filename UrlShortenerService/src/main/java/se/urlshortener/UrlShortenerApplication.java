@@ -6,6 +6,7 @@ import io.dropwizard.setup.Environment;
 import se.urlshortener.health.GetHealthCheck;
 import se.urlshortener.representation.ShortUrl;
 import se.urlshortener.resources.UrlShortenerResource;
+import se.urlshortener.util.AmazonDBDAOStore;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,9 +32,10 @@ public class UrlShortenerApplication extends Application<UrlShortenerConfigurati
     public void run(UrlShortenerConfiguration urlShortenerConfiguration, Environment environment) throws Exception {
         ConcurrentHashMap<String,String> cache = new ConcurrentHashMap<String,String>(100);
 
+        //Dummy data
         final ShortUrl shortUrl = new ShortUrl("http://dice.se/","0Cx8xg==");
         final ShortUrl otherShortUrl = new ShortUrl("http://www.google.com","sTE3IQ==");
-        
+
         cache.put(shortUrl.getShortURL(),shortUrl.getOriginalURL());
         cache.put(otherShortUrl.getShortURL(),otherShortUrl.getOriginalURL());
 
