@@ -22,21 +22,15 @@
         <!--/.container-fluid -->
     </div>
     <div class="jumbotron">
-        <div id="url-form"class="form-horizontal">
-            <div class="form-group">
-                <label for="URL" class="control-label col-xs-2">URL</label>
-
-                <div class="col-xs-10">
-                    <input type="text" class="form-control" id="URL" placeholder="URL">
-                </div>
+        <div id="url-form" class="form-horizontal">
+            <div class="input-group">
+                <input type="url" class="form-control" value="http://dice.se/" placeholder="http://dice.se/" id="URL">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" id="loadURLButton">Get Short URL!</button>
+                </span>
             </div>
-
-            <div class="form-group">
-                <div class="col-xs-offset-2 col-xs-10">
-                    <button type="submit" class="btn btn-primary"
-                            data-toggle="result"
-                            data-target="#result">Get Short URL!</button>
-                </div>
+            <div style="margin-top: 10px">
+                <span id="error" style="display:none" class="label label-danger">URL not valid!</span>
             </div>
         </div>
     </div>
@@ -50,6 +44,9 @@
             </div>
             <div class="modal-body">
                 <a class="btn" href="#"> One fine body…</a>
+                <blockquote>
+                    <p>note of mock url</p>
+                </blockquote>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
