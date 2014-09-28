@@ -33,5 +33,7 @@ function addUrl(url) {
 }
 
 function updateDialog(data) {
-    $('#result').find('.modal-body').find('p').text(data.url);
+    var link = $('#result').find('.modal-body').find('a');
+    link.text(data.url);
+    link.attr("href",data.url);
 }
