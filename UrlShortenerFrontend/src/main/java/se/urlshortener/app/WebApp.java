@@ -13,7 +13,7 @@ public class WebApp {
 
 
         // Look for that variable and default to 8080 if it isn't there.
-        String webPort = "9000";
+        String webPort = "5000";
         Server server = new Server(Integer.valueOf(webPort));
 
         WebAppContext webapp = new WebAppContext();

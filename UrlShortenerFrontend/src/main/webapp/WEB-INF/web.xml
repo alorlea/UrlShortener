@@ -10,25 +10,25 @@
     </welcome-file-list>
 
     <!-- Configure a proxy to the back-end services -->
-    <!--<servlet>
+    <servlet>
         <servlet-name>proxy</servlet-name>
         <servlet-class>org.eclipse.jetty.servlets.ProxyServlet$Transparent</servlet-class>
         <init-param>
             <param-name>ProxyTo</param-name>
-            <param-value>http://localhost:8080</param-value>
+            <param-value>http://localhost:8080/UrlShortener</param-value>
         </init-param>
         <init-param>
             <param-name>Prefix</param-name>
-            <param-value>/api</param-value>
+            <param-value>/UrlShortener</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
-        &lt;!&ndash;async-supported>true</async-supported&ndash;&gt;
+        <!--async-supported>true</async-supported-->
     </servlet>
 
-    &lt;!&ndash; Make the proxy handle requests to /api/* &ndash;&gt;
+    <!-- Make the proxy handle requests to /api/* -->
     <servlet-mapping>
         <servlet-name>proxy</servlet-name>
-        <url-pattern>/api/*</url-pattern>
-    </servlet-mapping>-->
+        <url-pattern>/UrlShortener/*</url-pattern>
+    </servlet-mapping>
 
 </web-app>
