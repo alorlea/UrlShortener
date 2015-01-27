@@ -35,7 +35,7 @@ public class UrlShortenerApplication extends Application<UrlShortenerConfigurati
         final GetHealthCheck healthCheck = new GetHealthCheck("test");
 
         //TODO HealthCheck correctly
-        environment.healthChecks().register("GetURLToDICEWorks",healthCheck);
+        environment.healthChecks().register("ImAlive",healthCheck);
         environment.jersey().register(resource);
     }
 }
