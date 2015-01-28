@@ -1,10 +1,9 @@
 package se.urlshortener.resources;
 
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.codahale.metrics.annotation.Timed;
 import se.urlshortener.UrlShortenerConfiguration;
 import se.urlshortener.representation.Url;
-import se.urlshortener.util.AmazonDBDAOStore;
+import se.urlshortener.util.CassandraDBDAO;
 import se.urlshortener.util.UrlShortenerUtil;
 
 import javax.ws.rs.*;
@@ -23,23 +22,23 @@ import java.util.concurrent.ConcurrentHashMap;
 @Produces(MediaType.APPLICATION_JSON)
 public class UrlShortenerResource {
     private Map<String, String> cachedKeys;
-    private boolean amazonDBEnabled;
+    private boolean cassandraDBEnabled;
     private String baseURL;
 
     public UrlShortenerResource(Map<String, String> storedValuesTest) {
         this.cachedKeys = storedValuesTest;
-        this.amazonDBEnabled = false;
+        this.cassandraDBEnabled = false;
         this.baseURL = "http://localhost:8080/UrlShortener";
     }
 
     public UrlShortenerResource(UrlShortenerConfiguration urlShortenerConfiguration) {
         this.baseURL = urlShortenerConfiguration.getBaseURL();
-        if (urlShortenerConfiguration.getEnableAmazonDB().equals("true")) {
-            this.amazonDBEnabled = true;
-            AmazonDBDAOStore.init(urlShortenerConfiguration);
+        if (urlShortenerConfiguration.getEnableCassandra().equals("true")) {
+            this.cassandraDBEnabled = true;
+            CassandraDBDAO.init(urlShortenerConfiguration);
         } else {
             this.cachedKeys = new ConcurrentHashMap<String, String>();
-            this.amazonDBEnabled = false;
+            this.cassandraDBEnabled = false;
         }
     }
 
@@ -48,11 +47,10 @@ public class UrlShortenerResource {
     @Timed
     public Response fetchOriginalURL(@PathParam("shortUrl") String shortUrl) {
         try {
-            if (amazonDBEnabled) {
-                Map<String, AttributeValue> result = AmazonDBDAOStore.getOriginalURL(shortUrl);
+            if (cassandraDBEnabled) {
+                String result = CassandraDBDAO.getOriginalURL(shortUrl);
                 if (result != null) {
-                    String originalUrl = result.get("originalurl").getS();
-                    URI location = new URI(originalUrl);
+                    URI location = new URI(result);
                     return Response.temporaryRedirect(location).build();
                 } else {
                     return Response.status(404).build();
@@ -83,10 +81,10 @@ public class UrlShortenerResource {
 
     private void storeNewEntry(String shortUrl, String url) {
         //check my if exists
-        if (amazonDBEnabled) {
-            Map<String, AttributeValue> result = AmazonDBDAOStore.getOriginalURL(shortUrl);
+        if (cassandraDBEnabled) {
+            String result = CassandraDBDAO.getOriginalURL(shortUrl);
             if (result == null) {
-                AmazonDBDAOStore.putNewEncodedURL(shortUrl, url);
+                CassandraDBDAO.putNewEncodedURL(shortUrl, url);
             }
         } else {
             if (!cachedKeys.containsKey(shortUrl)) {

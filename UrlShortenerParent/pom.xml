@@ -18,7 +18,6 @@
         <jackson.version>2.3.2</jackson.version>
         <dropwizard.version>0.7.0</dropwizard.version>
         <apachecommon.version>1.9</apachecommon.version>
-        <amazonws.version>1.8.10.2</amazonws.version>
     </properties>
 
     <dependencyManagement>
@@ -54,11 +53,6 @@
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>${apachecommon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-java-sdk</artifactId>
-                <version>${amazonws.version}</version>
             </dependency>
 
 

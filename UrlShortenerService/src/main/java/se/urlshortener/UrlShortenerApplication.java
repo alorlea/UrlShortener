@@ -6,7 +6,6 @@ import io.dropwizard.setup.Environment;
 import se.urlshortener.health.GetHealthCheck;
 import se.urlshortener.representation.ShortUrl;
 import se.urlshortener.resources.UrlShortenerResource;
-import se.urlshortener.util.AmazonDBDAOStore;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -35,7 +34,7 @@ public class UrlShortenerApplication extends Application<UrlShortenerConfigurati
         final GetHealthCheck healthCheck = new GetHealthCheck("test");
 
         //TODO HealthCheck correctly
-        environment.healthChecks().register("GetURLToDICEWorks",healthCheck);
+        environment.healthChecks().register("Im Alive",healthCheck);
         environment.jersey().register(resource);
     }
 }

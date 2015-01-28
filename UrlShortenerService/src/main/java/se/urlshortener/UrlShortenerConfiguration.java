@@ -12,11 +12,10 @@ public class UrlShortenerConfiguration extends Configuration {
     @NotEmpty
     private String baseURL;
     @NotEmpty
-    private String enableAmazonDB;
-    private String awsAccessKeyId;
-    private String secretAccessKey;
-    private String awsRegion;
-    private String awsTableName;
+    private String enableCassandra;
+    private String client;
+    private String tableName;
+    private String keyspace;
 
     @JsonProperty
     public String getBaseURL() {
@@ -29,52 +28,42 @@ public class UrlShortenerConfiguration extends Configuration {
     }
 
     @JsonProperty
-    public String getEnableAmazonDB() {
-        return enableAmazonDB;
+    public String getEnableCassandra() {
+        return enableCassandra;
     }
 
     @JsonProperty
-    public void setEnableAmazonDB(String enableAmazonDB) {
-        this.enableAmazonDB = enableAmazonDB;
+    public void setEnableCassandra(String enableCassandra) {
+        this.enableCassandra = enableCassandra;
     }
 
     @JsonProperty
-    public String getAwsAccessKeyId() {
-        return awsAccessKeyId;
+    public String getClient() {
+        return client;
     }
 
     @JsonProperty
-    public void setAwsAccessKeyId(String awsAccessKeyId) {
-        this.awsAccessKeyId = awsAccessKeyId;
+    public void setClient(String client) {
+        this.client = client;
     }
 
     @JsonProperty
-    public String getSecretAccessKey() {
-        return secretAccessKey;
+    public String getTableName() {
+        return tableName;
     }
 
     @JsonProperty
-    public void setSecretAccessKey(String secretAccessKey) {
-        this.secretAccessKey = secretAccessKey;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
     @JsonProperty
-    public String getAwsRegion() {
-        return awsRegion;
+    public String getKeyspace() {
+        return keyspace;
     }
 
     @JsonProperty
-    public void setAwsRegion(String awsRegion) {
-        this.awsRegion = awsRegion;
-    }
-
-    @JsonProperty
-    public String getAwsTableName() {
-        return awsTableName;
-    }
-
-    @JsonProperty
-    public void setAwsTableName(String awsTableName) {
-        this.awsTableName = awsTableName;
+    public void setKeyspace(String keyspace) {
+        this.keyspace = keyspace;
     }
 }

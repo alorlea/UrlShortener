@@ -1,6 +1,5 @@
 baseURL: http://localhost:8080/UrlShortener
-enableAmazonDB: false
-awsAccessKeyId:
-secretAccessKey:
-awsRegion:
-awsTableName:
+enableCassandra: true
+client: 192.168.56.101
+keyspace: urls
+tableName: encodedurls
