@@ -12,7 +12,7 @@ public class CassandraConnectorTest {
 
     public static void main(String[] args) {
         CassandraConnectorTest client = new CassandraConnectorTest();
-        client.connect("54.171.15.250");
+        client.connect("172.31.41.159");
         client.createSchema();
         /*client.loadData();
         client.querySchema();
