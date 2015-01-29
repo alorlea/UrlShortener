@@ -12,7 +12,7 @@ public class CassandraConnectorTest {
 
     public static void main(String[] args) {
         CassandraConnectorTest client = new CassandraConnectorTest();
-        client.connect("192.168.56.101");
+        client.connect("54.171.15.250");
         client.createSchema();
         /*client.loadData();
         client.querySchema();
@@ -80,7 +80,7 @@ public class CassandraConnectorTest {
 
 
     public void close() {
-        cluster.shutdown();
+        cluster.close();
     }
 
 }
